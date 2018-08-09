@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<title>Search engine</title>
+	
+	<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/webjars/font-awesome/css/font-awesome.min.css">
+	<link href="/main.css" rel="stylesheet">
+	
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script src="/webjars/tether/dist/js/tether.min.js"></script>
+	<script src="/webjars/popper.js/dist/umd/popper.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+	<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+	<script src="/app.js"></script>
+	<script src="/jquery.ajax-cross-origin.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#search").click(function () {
+					$.ajax({
+						url:"http://localhost:8090/search?words=" + $("#searchValue").val(),
+						"success": function(data) {
+							$("#result").html(data);
+						},
+						"method": "POST",
+						crossOrigin: true});
+			});
+			$("#text").click(function () {
+				$.ajax({
+					url:"http://localhost:8090/addText",
+					"data": $("#textValue").val(),
+					"method": "POST",
+					"contentType": "application/json",
+					crossOrigin: true});
+			});
+		});
+	</script>
+
+</head>
+<body>
+	<noscript>
+		<h2 style="color: #ff0000">Seems your browser doesn't support
+			Javascript! Please enable Javascript and reload this page!</h2>
+	</noscript>
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Search engine</h1>
+			</div>
+		</div>
+		<div class="row">
+			<form action=":8090/search" id="searchForm">
+				<div class="col-md-12">
+					insert what you want to search here
+				</div>
+				<div class="col-md-12"v>
+					<input id="searchValue" type="text" width="300px" name="words">
+				</div>
+				<div class="col-md-12">
+					<input type="button" value="search" id="search">
+				</div>
+			</form>
+		</div><br><br><br>
+		<div class="row">
+			<form action=":8090/addText" id="insertForm">
+				<div class="col-md-12"v>
+					insert text you want to add to search engine here
+				</div>
+				<div class="col-md-12"v>
+					<textarea name="text" id="textValue">
+						some text to search for
+					</textarea>
+				</div>
+				<div class="col-md-12">
+					<input type="button" value="insert" id="text">
+				</div>
+			</form>
+		</div><br><br><br>
+		<div class="row">
+			<div class="col-md-12" id="result"></div>
+		</div>
+	</div>
+</body>
+</html>
